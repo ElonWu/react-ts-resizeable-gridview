@@ -1,21 +1,23 @@
 import * as React from 'react';
 import './style.css';
+import { throttle, debounce } from 'lodash';
 
 export default function App() {
   return (
     <div className="container">
       <GridView key="row" direction="row">
-        <div
-          style={{ width: '100%', height: '100%', background: 'lightblue' }}
-        />
+        <div style={{ background: 'lightblue' }} />
 
-        <GridView key="col" direction="col">
-          <div
-            style={{ width: '100%', height: '100%', background: 'lightblue' }}
-          />
-          <div
-            style={{ width: '100%', height: '100%', background: 'lightgreen' }}
-          />
+        <GridView key="row" direction="row">
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ height: 88, background: 'lightgreen' }} />
+
+            <GridView key="col" direction="col" defaultOffset={88}>
+              <div style={{ background: 'lightyellow' }} />
+              <div style={{ background: 'lightblue' }} />
+            </GridView>
+          </div>
+          <div style={{ background: 'lightblue' }} />
         </GridView>
       </GridView>
     </div>
@@ -70,7 +72,7 @@ function GridView({
   }, [direction, firstRowOffset]);
 
   const onMove = React.useCallback(
-    (e) => {
+    throttle((e) => {
       if (!moving || !ref?.current) return;
       const { width, left, height, top } = ref.current.getBoundingClientRect();
 
@@ -82,7 +84,7 @@ function GridView({
       }
 
       setFirstRowOffset(Math.min(100, Math.max(0, offset)));
-    },
+    }, 16),
     [moving, direction]
   );
 
@@ -96,7 +98,6 @@ function GridView({
       onMouseLeave={() => setMoving(false)}
     >
       {children}
-
       <span
         className="gridSplit"
         style={splitStyle}
