@@ -6,17 +6,10 @@ export default function App() {
   return (
     <div className="container">
       <GridView key="row" direction="row">
-        <div style={{ background: 'lightblue' }} />
+        <div style={{ background: 'purple' }} />
 
-        <GridView key="row" direction="row">
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div style={{ height: 88, background: 'lightgreen' }} />
-
-            <GridView key="col" direction="col" defaultOffset={88}>
-              <div style={{ background: 'lightyellow' }} />
-              <div style={{ background: 'lightblue' }} />
-            </GridView>
-          </div>
+        <GridView key="col" direction="col">
+          <div style={{ background: 'lightgreen' }} />
           <div style={{ background: 'lightblue' }} />
         </GridView>
       </GridView>
@@ -59,6 +52,7 @@ function GridView({
         top: 0,
         left: `${firstRowOffset}%`,
         cursor: 'col-resize',
+        transform: 'translate(-2px, 0)',
       };
     }
 
@@ -68,6 +62,7 @@ function GridView({
       left: 0,
       top: `${firstRowOffset}%`,
       cursor: 'row-resize',
+      transform: 'translate(0, -2px)',
     };
   }, [direction, firstRowOffset]);
 
